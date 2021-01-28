@@ -83,11 +83,16 @@ func (c *Client) NormalizeCollectibles(collectibles []Collectible, coinIndex uin
 		return nil, err
 	}
 	for _, c := range collectibles {
+		category := c.ContractName
+		if len(category) == 0 {
+			category = info.Name
+		}
 		page = append(page, types.Collectible{
 			ID:              blockatlas.GenCollectibleId(c.ContractAddr, c.TokenID),
 			CollectionID:    c.ContractAddr,
 			TokenID:         c.TokenID,
 			ContractAddress: c.ContractAddr,
+			Category:        category,
 			ImageUrl:        normalizeUrl(info.Image),
 			ExternalLink:    normalizeUrl(c.TokenURI),
 			Type:            string(types.ERC721),
